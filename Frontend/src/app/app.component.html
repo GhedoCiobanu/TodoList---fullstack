@@ -1,0 +1,194 @@
+<div
+  class="todo-container"
+  style="max-width: 500px; margin: 50px auto; font-family: Arial, sans-serif"
+>
+  <h2>My To-Do List</h2>
+
+  <!-- SECȚIUNEA ACTUALIZATĂ: Butoanele de filtrare cu contoare dinamice -->
+  <div
+    style="
+      margin-bottom: 20px;
+      display: flex;
+      gap: 5px;
+      background: #f8f9fa;
+      padding: 5px;
+      border-radius: 4px;
+    "
+  >
+    <!-- Butonul Toate -->
+    <button
+      (click)="currentFilter = 'toate'"
+      [style.background]="currentFilter === 'toate' ? '#007bff' : 'transparent'"
+      [style.color]="currentFilter === 'toate' ? 'white' : '#333'"
+      style="
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+      "
+    >
+      Toate ({{ todos.length }})
+    </button>
+
+    <!-- Butonul Nefinalizate -->
+    <button
+      (click)="currentFilter = 'nefinalizate'"
+      [style.background]="
+        currentFilter === 'nefinalizate' ? '#007bff' : 'transparent'
+      "
+      [style.color]="currentFilter === 'nefinalizate' ? 'white' : '#333'"
+      style="
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+      "
+    >
+      Nefinalizate ({{ (todos | filterTodos: "nefinalizate").length }})
+    </button>
+
+    <!-- Butonul Finalizate -->
+    <button
+      (click)="currentFilter = 'finalizate'"
+      [style.background]="
+        currentFilter === 'finalizate' ? '#007bff' : 'transparent'
+      "
+      [style.color]="currentFilter === 'finalizate' ? 'white' : '#333'"
+      style="
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+      "
+    >
+      Finalizate ({{ (todos | filterTodos: "finalizate").length }})
+    </button>
+  </div>
+
+  <!-- Formularul de adăugare de sus -->
+  <div style="margin-bottom: 20px; display: flex; gap: 10px">
+    <input
+      type="text"
+      [(ngModel)]="newTodoTitle"
+      placeholder="Adaugă un task nou..."
+      style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px"
+    />
+    <button
+      (click)="create()"
+      style="
+        padding: 10px 15px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      "
+    >
+      Adaugă
+    </button>
+  </div>
+
+  <!-- Mesaj în caz că lista vizuală e goală -->
+  <div
+    *ngIf="filteredTodos.length === 0"
+    style="color: #666; font-style: italic; padding: 10px"
+  >
+    Nu există task-uri pentru acest filtru.
+  </div>
+
+  <!-- MODIFICARE CRITICĂ: Acum iterăm prin filteredTodos în loc de todos -->
+  <div
+    *ngFor="let todo of filteredTodos"
+    style="
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    "
+  >
+    <!-- Checkbox-ul pentru IsCompleted -->
+    <input
+      type="checkbox"
+      [(ngModel)]="todo.IsCompleted"
+      (change)="updateTodo(todo)"
+      style="transform: scale(1.2); cursor: pointer"
+    />
+
+    <!-- Zona flexibilă pentru text / editare -->
+    <div style="flex: 1">
+      <input
+        *ngIf="editingTodoId === todo.Id"
+        type="text"
+        [(ngModel)]="todo.Title"
+        style="
+          width: 90%;
+          padding: 5px;
+          border: 1px solid #007bff;
+          border-radius: 4px;
+        "
+      />
+
+      <span
+        *ngIf="editingTodoId !== todo.Id"
+        [class.completed]="todo.IsCompleted"
+        style="font-size: 16px"
+      >
+        {{ todo.Title }}
+      </span>
+    </div>
+
+    <!-- Butoanele de Acțiune -->
+    <div style="display: flex; gap: 5px">
+      <button
+        *ngIf="editingTodoId === todo.Id"
+        (click)="updateTodo(todo)"
+        style="
+          padding: 5px 10px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        "
+      >
+        Salvează
+      </button>
+
+      <button
+        *ngIf="editingTodoId !== todo.Id"
+        (click)="startEdit(todo)"
+        style="
+          padding: 5px 10px;
+          background: #ffc107;
+          color: black;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        "
+      >
+        Editează
+      </button>
+
+      <button
+        (click)="delete(todo.Id)"
+        style="
+          padding: 5px 10px;
+          background: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        "
+      >
+        Șterge
+      </button>
+    </div>
+  </div>
+</div>

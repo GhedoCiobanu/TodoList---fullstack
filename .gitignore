@@ -1,0 +1,14 @@
+# Ne asigurăm că nu urcăm fișierele gigant de Angular
+**/node_modules/
+**/.angular/
+**/dist/
+
+# Ne asigurăm că nu urcăm fișierele temporare de compilare .NET
+**/bin/
+**/obj/
+**/.vs/
+**/*.user
+
+# Ignorăm setările locale specifice editorului
+.vscode/
+.idea/
