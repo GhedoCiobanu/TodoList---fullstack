@@ -32,6 +32,16 @@ export class AppComponent implements OnInit {
     return this.todos; // Pentru 'toate', returnăm întreaga listă originală
   }
 
+  // Întoarce numărul total de task-uri nefinalizate pentru paranteze
+  get uncompletedCount(): number {
+    return this.todos.filter((todo) => !todo.IsCompleted).length;
+  }
+
+  // Întoarce numărul total de task-uri finalizate pentru paranteze
+  get completedCount(): number {
+    return this.todos.filter((todo) => todo.IsCompleted).length;
+  }
+
   // Constructorul injectează pachetul HttpClient și îl redenumește în „this.http” pentru a-l folosi mai jos
   constructor(private http: HttpClient) {}
 

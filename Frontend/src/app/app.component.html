@@ -4,7 +4,7 @@
 >
   <h2>My To-Do List</h2>
 
-  <!-- SECȚIUNEA ACTUALIZATĂ: Butoanele de filtrare cu contoare dinamice -->
+  <!-- Butoanele de filtrare -->
   <div
     style="
       margin-bottom: 20px;
@@ -15,7 +15,6 @@
       border-radius: 4px;
     "
   >
-    <!-- Butonul Toate -->
     <button
       (click)="currentFilter = 'toate'"
       [style.background]="currentFilter === 'toate' ? '#007bff' : 'transparent'"
@@ -32,7 +31,6 @@
       Toate ({{ todos.length }})
     </button>
 
-    <!-- Butonul Nefinalizate -->
     <button
       (click)="currentFilter = 'nefinalizate'"
       [style.background]="
@@ -48,10 +46,9 @@
         font-weight: bold;
       "
     >
-      Nefinalizate ({{ (todos | filterTodos: "nefinalizate").length }})
+      Nefinalizate ({{ uncompletedCount }})
     </button>
 
-    <!-- Butonul Finalizate -->
     <button
       (click)="currentFilter = 'finalizate'"
       [style.background]="
@@ -67,7 +64,7 @@
         font-weight: bold;
       "
     >
-      Finalizate ({{ (todos | filterTodos: "finalizate").length }})
+      Finalizate ({{ completedCount }})
     </button>
   </div>
 
